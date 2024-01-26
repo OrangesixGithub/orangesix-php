@@ -10,7 +10,13 @@
     "psr-4": {
       "Orangecode\\": "src"
     },
-    "files": []
+    "files": [
+      "src/Function/all/keys.php",
+      "src/Function/all/convert.php",
+      "src/Function/date/hours.php",
+      "src/Function/date/period.php",
+      "src/Function/laravel/view.php"
+    ]
   },
   "authors": [
     {
