@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Helpers\Repository;
+namespace Orangecode\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

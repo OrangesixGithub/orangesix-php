@@ -1,7 +1,8 @@
 <?php
 
-namespace Orangecode\Helpers\Service\Response;
-use Orangecode\Helpers\Service\Response\Enum\Message as MessageEnum;
+namespace Orangecode\Service\Response;
+
+use Orangecode\Service\Response\Enum\Message as MessageEnum;
 
 class Message
 {
@@ -24,12 +25,13 @@ class Message
         $this->message = $message;
         $this->type = $type;
         $this->icon = $icon;
-        if (empty($icon))
+        if (empty($icon)) {
             $this->icon = match ($type) {
-                MessageEnum::Error => "bi bi-bug",
-                MessageEnum::Success => "bi bi-check-circle",
-                MessageEnum::Warning => "bi bi-exclamation-triangle",
-                default => "bi bi-info-circle",
+                MessageEnum::Error => 'bi bi-bug',
+                MessageEnum::Success => 'bi bi-check-circle',
+                MessageEnum::Warning => 'bi bi-exclamation-triangle',
+                default => 'bi bi-info-circle',
             };
+        }
     }
 }

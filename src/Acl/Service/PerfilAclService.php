@@ -1,12 +1,12 @@
 <?php
 
-namespace Orangecode\Helpers\Acl\Service;
+namespace Orangecode\Acl\Service;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Orangecode\Helpers\Service\ServiceBase;
-use Orangecode\Helpers\Service\Response\ServiceResponse;
-use Orangecode\Helpers\Acl\Repository\PerfilAclRepository;
+use Orangecode\Service\ServiceBase;
+use Orangecode\Service\Response\ServiceResponse;
+use Orangecode\Acl\Repository\PerfilAclRepository;
 
 class PerfilAclService extends ServiceBase
 {
@@ -26,9 +26,9 @@ class PerfilAclService extends ServiceBase
      */
     public function findFilial(int $filial): Collection
     {
-        return $this->getModel()::where("id_filial", $filial)
+        return $this->getModel()::where('id_filial', $filial)
             ->get()
-            ->map(function ($item){
+            ->map(function ($item) {
                 $data = $item;
                 $data->label = $item->nome;
                 return $data;
@@ -42,9 +42,9 @@ class PerfilAclService extends ServiceBase
     public function validated(Request $request): array
     {
         return $request->validate([
-            "id" => $request->type === "update" ? "required" : "",
-            "nome" => "required",
-            "id_filial" => "required"
+            'id' => $request->type === 'update' ? 'required' : '',
+            'nome' => 'required',
+            'id_filial' => 'required'
         ]);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Orangecode\Helpers\Service\Response;
+namespace Orangecode\Service\Response;
 
-use Orangecode\Helpers\Service\Response\Enum\Field as FieldEnum;
+use Orangecode\Service\Response\Enum\Field as FieldEnum;
 
 class Field
 {
@@ -28,8 +28,9 @@ class Field
     {
         $this->field = $field;
         $this->disabled = $disabled;
-        if (gettype($message) == "string")
+        if (gettype($message) == 'string') {
             $message = [$message];
+        }
         $this->message = [$field => $message];
         $this->messageType = $messageType;
     }

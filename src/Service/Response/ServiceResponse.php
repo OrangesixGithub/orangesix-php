@@ -1,8 +1,9 @@
 <?php
 
-namespace Orangecode\Helpers\Service\Response;
-use Orangecode\Helpers\Exceptions\Field;
-use Orangecode\Helpers\Service\Response\Enum\Message;
+namespace Orangecode\Service\Response;
+
+use Orangecode\Exceptions\Field;
+use Orangecode\Service\Response\Enum\Message;
 
 class ServiceResponse
 {
@@ -19,9 +20,10 @@ class ServiceResponse
      */
     public function responseField(string $field, array | string $message, int $code = 422): void
     {
-        if (gettype($field) == 'string')
+        if (gettype($field) == 'string') {
             $message = [$message];
-        throw new Field(json_encode([$field => $message]),  $code);
+        }
+        throw new Field(json_encode([$field => $message]), $code);
     }
 
     /**
@@ -32,8 +34,8 @@ class ServiceResponse
      */
     public function responseSessionMessage(string $message, Message $type = Message::Success): ServiceResponse
     {
-        session()->flash("message", $message);
-        session()->flash("messageType", $type);
+        session()->flash('message', $message);
+        session()->flash('messageType', $type);
         return $this;
     }
 
@@ -45,9 +47,11 @@ class ServiceResponse
     public function responseData(array $return): ServiceResponse
     {
         $data = new Response();
-        foreach ($return as $key => $value)
-            if (property_exists($data, $key))
+        foreach ($return as $key => $value) {
+            if (property_exists($data, $key)) {
                 $data->$key = $value;
+            }
+        }
         $this->return = $data;
         return $this;
     }

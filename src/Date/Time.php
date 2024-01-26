@@ -1,6 +1,7 @@
 <?php
 
-namespace Orangecode\Helpers\Date;
+namespace Orangecode\Date;
+
 class Time
 {
     /** @var string */
@@ -17,7 +18,7 @@ class Time
      * @param string $exp_fim
      * @param array $facultativo
      */
-    public function __construct(string $exp_inicio = "08:00", string $exp_fim = "18:00", array $facultativo = [])
+    public function __construct(string $exp_inicio = '08:00', string $exp_fim = '18:00', array $facultativo = [])
     {
         $this->exp_inicio = $exp_inicio;
         $this->exp_fim = $exp_fim;
@@ -33,27 +34,29 @@ class Time
     public function addHorasUteis(string $date_start, int|string $horas): ?\DateTime
     {
         try {
-            $date_start = new \DateTime(strpos($date_start, " ") ? $date_start : $date_start . " " . $this->exp_inicio);
+            $date_start = new \DateTime(strpos($date_start, ' ') ? $date_start : $date_start . ' ' . $this->exp_inicio);
             $horas = is_string($horas) ? HoursToDecimal($horas) : $horas;
             $period = HoursToDecimal($this->exp_fim) - HoursToDecimal($this->exp_inicio); //6
 
-            while ($this->verifyFeriadoOrFds($date_start))
+            while ($this->verifyFeriadoOrFds($date_start)) {
                 $date_start->add(\DateInterval::createFromDateString('+1day'));
+            }
 
             $horasAdd = fmod($horas, $period);
             $days = floor($horas / $period);
             while ($days > 0) {
-                $date_start->add(\DateInterval::createFromDateString("+1day"));
-                if (!$this->verifyFeriadoOrFds($date_start))
+                $date_start->add(\DateInterval::createFromDateString('+1day'));
+                if (!$this->verifyFeriadoOrFds($date_start)) {
                     $days--;
+                }
             }
 
-            $date_fim = new \DateTime($date_start->format('Y-m-d') . " " . $this->exp_fim);
+            $date_fim = new \DateTime($date_start->format('Y-m-d') . ' ' . $this->exp_fim);
             $date_start->add(\DateInterval::createFromDateString("+{$horasAdd}hours"));
             $diff = $date_fim->diff($date_start);
             if ($diff->invert == 0 && $diff->h > 0) {
-                $date_start->add(\DateInterval::createFromDateString("+1day"));
-                $date_start = new \DateTime($date_start->format('Y-m-d') . " " .  $this->exp_inicio);
+                $date_start->add(\DateInterval::createFromDateString('+1day'));
+                $date_start = new \DateTime($date_start->format('Y-m-d') . ' ' .  $this->exp_inicio);
                 $date_start->add(\DateInterval::createFromDateString("+{$diff->h}hours"));
             }
             return $date_start;
@@ -73,13 +76,15 @@ class Time
     public function getHorasUteis(string $date_start, string $date_fim, bool $hours_string = true): mixed
     {
         try {
-            $date_start = new \DateTime(strpos($date_start, " ") ? $date_start : $date_start . " " . $this->exp_inicio);
-            $date_fim = new \DateTime(strpos($date_fim, " ") ? $date_fim : $date_fim . " " . $this->exp_fim);
+            $date_start = new \DateTime(strpos($date_start, ' ') ? $date_start : $date_start . ' ' . $this->exp_inicio);
+            $date_fim = new \DateTime(strpos($date_fim, ' ') ? $date_fim : $date_fim . ' ' . $this->exp_fim);
 
-            if (HoursToMinute($date_start->format("H:i")) < HoursToMinute($this->exp_inicio))
-                $date_start = new \DateTime($date_start->format("Y-m-d") . " " . $this->exp_inicio);
-            if (HoursToMinute($date_fim->format("H:i")) > HoursToMinute($this->exp_fim))
-                $date_fim = new \DateTime($date_fim->format("Y-m-d") . " " . $this->exp_fim);
+            if (HoursToMinute($date_start->format('H:i')) < HoursToMinute($this->exp_inicio)) {
+                $date_start = new \DateTime($date_start->format('Y-m-d') . ' ' . $this->exp_inicio);
+            }
+            if (HoursToMinute($date_fim->format('H:i')) > HoursToMinute($this->exp_fim)) {
+                $date_fim = new \DateTime($date_fim->format('Y-m-d') . ' ' . $this->exp_fim);
+            }
             $diff = $date_start->diff($date_fim);
 
             /**
@@ -105,35 +110,38 @@ class Time
 
             //Verifica se o final é maior que data inicial
             if ($date_start->format('Y-m-d') < $date_fim->format('Y-m-d')) {
-
                 //Diferença do primeiro dia util
                 $firtsDay = new \DateTime($date_start->format('Y-m-d') . $this->exp_fim);
                 $firtsDayDiff = $date_start->diff($firtsDay);
-                if (!$this->verifyFeriadoOrFds($firtsDay))
+                if (!$this->verifyFeriadoOrFds($firtsDay)) {
                     $result = $addHoras($result, $firtsDayDiff);
+                }
 
                 //verifica se a diferença e mais de 1 dia
                 if ($diff->days > 0) {
                     for ($i = 0; $i <= ($diff->days); $i++) {
-
                         $date_start->add(\DateInterval::createFromDateString('+1day'));
                         $dateDay['i'] = new \DateTime($date_start->format('Y-m-d') . $this->exp_inicio);
                         $dateDay['f'] = new \DateTime($date_start->format('Y-m-d') . $this->exp_fim);
 
-                        if ($date_fim->format('Y-m-d') < $date_start->format('Y-m-d'))
+                        if ($date_fim->format('Y-m-d') < $date_start->format('Y-m-d')) {
                             continue;
+                        }
 
                         if ($dateDay['i']->format('Y-m-d') !== $date_fim->format('Y-m-d')) {
-                            if ($this->verifyFeriadoOrFds($dateDay['i']))
+                            if ($this->verifyFeriadoOrFds($dateDay['i'])) {
                                 continue;
+                            }
                             $d = $dateDay['i']->diff($dateDay['f']);
                             $result = $addHoras($result, $d);
                         } else {
-                            if ($this->verifyFeriadoOrFds($date_fim))
+                            if ($this->verifyFeriadoOrFds($date_fim)) {
                                 continue;
+                            }
                             $d = $dateDay['i']->diff($date_fim);
-                            if ($d->invert === 0)
+                            if ($d->invert === 0) {
                                 $result = $addHoras($result, $d);
+                            }
                         }
                     }
                 } else {
@@ -145,14 +153,14 @@ class Time
                         $result = $addHoras($result, $lastDayDiff);
                     }
                 }
-            } else
-                if (!$this->verifyFeriadoOrFds($date_start))
-                    $result = $addHoras($result, $diff);
+            } elseif (!$this->verifyFeriadoOrFds($date_start)) {
+                $result = $addHoras($result, $diff);
+            }
 
             $horas = ($result['dias'] * 24) + $result['horas'] + ($result['minutos'] / 60) + (($result['segundos'] / 60) / 60);
             return $hours_string ? DecimalToHours($horas) : $horas;
         } catch (\Exception $exception) {
-            return "00:00";
+            return '00:00';
         }
     }
 
@@ -163,8 +171,9 @@ class Time
      */
     private function verifyFeriadoOrFds(\DateTime $date): bool
     {
-        if (GetFeriado($date->format("Y-m-d"), $this->facultativo) || $date->format('w') == 0 || $date->format('w') == 6)
+        if (GetFeriado($date->format('Y-m-d'), $this->facultativo) || $date->format('w') == 0 || $date->format('w') == 6) {
             return true;
+        }
         return false;
     }
 }

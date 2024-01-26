@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Helpers\Repository;
+namespace Orangecode\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -21,11 +21,12 @@ trait RepositoryDataBase
      */
     public function save(array $data): int
     {
-        $model = empty($data["id"])
+        $model = empty($data['id'])
             ? $this->model
-            : $this->model::findOrFail($data["id"]);
-        foreach ($data as $key => $value)
+            : $this->model::findOrFail($data['id']);
+        foreach ($data as $key => $value) {
             $model->$key = $value;
+        }
         $model->save();
         return $model->id;
     }
@@ -46,8 +47,9 @@ trait RepositoryDataBase
      */
     public function find(int $id = null): Collection|Model|null
     {
-        if (!empty($id))
+        if (!empty($id)) {
             return $this->model::findOrFail($id);
+        }
         return $this->model::all();
     }
 }

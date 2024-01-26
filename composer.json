@@ -8,7 +8,7 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Orangecode\\Helpers\\": "src"
+      "Orangecode\\": "src"
     },
     "files": []
   },
@@ -25,6 +25,7 @@
     "ext-calendar": "*"
   },
   "require-dev": {
+    "laravel/pint": "^1.13",
     "laravel/framework": "^v10.00"
   }
 }

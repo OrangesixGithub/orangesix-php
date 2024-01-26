@@ -1,10 +1,10 @@
 <?php
 
-namespace Orangecode\Helpers\Acl\Repository;
+namespace Orangecode\Acl\Repository;
 
-use Orangecode\Helpers\Acl\Model\Perfil;
-use Orangecode\Helpers\Repository\Repository;
-use Orangecode\Helpers\Repository\RepositoryDataBase;
+use Orangecode\Acl\Model\Perfil;
+use Orangecode\Repository\Repository;
+use Orangecode\Repository\RepositoryDataBase;
 
 class PerfilAclRepository implements Repository
 {

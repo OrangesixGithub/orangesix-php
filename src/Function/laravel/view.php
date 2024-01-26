@@ -1,5 +1,6 @@
 <?php
-if (!function_exists("IsActiveRoute")) {
+
+if (!function_exists('IsActiveRoute')) {
     /**
      * @param string|array $route
      * @param mixed $return
@@ -9,20 +10,20 @@ if (!function_exists("IsActiveRoute")) {
     function IsActiveRoute(
         string|array $route,
         mixed        $return = 'active',
-        mixed        $falied = ""
-    ): mixed
-    {
-        if (!class_exists("\Illuminate\Support\Facades\Request"))
+        mixed        $falied = ''
+    ): mixed {
+        if (!class_exists("\Illuminate\Support\Facades\Request")) {
             return $falied;
+        }
         $url = \Illuminate\Support\Facades\Request::url();
-        if (is_array($route))
+        if (is_array($route)) {
             return in_array($url, $route) ? $return : $falied;
+        }
         return $url === $route ? $return : $falied;
     }
 }
 
 if (!function_exists('ChangeEnvironmentVariable')) {
-
     /**
      * Realiza a mudança das variaveis de ambiente
      * @param $key
@@ -34,16 +35,19 @@ if (!function_exists('ChangeEnvironmentVariable')) {
         if (function_exists('base_path') && function_exists('env')) {
             $path = base_path('.env');
 
-            if (is_bool(env($key)))
+            if (is_bool(env($key))) {
                 $old = env($key) ? 'true' : 'false';
-            elseif (env($key) === null)
+            } elseif (env($key) === null) {
                 $old = 'null';
-            else
+            } else {
                 $old = env($key);
+            }
 
             if (file_exists($path)) {
                 return is_int(file_put_contents($path, str_replace(
-                    "$key=" . $old, "$key=" . $value, file_get_contents($path)
+                    "$key=" . $old,
+                    "$key=" . $value,
+                    file_get_contents($path)
                 )));
             }
         }

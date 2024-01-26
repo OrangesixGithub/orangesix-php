@@ -1,12 +1,12 @@
 <?php
 
-namespace Orangecode\Helpers\Acl\Service;
+namespace Orangecode\Acl\Service;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Orangecode\Helpers\Acl\Repository\PermissoesAclRepository;
-use Orangecode\Helpers\Service\Response\ServiceResponse;
-use Orangecode\Helpers\Service\ServiceBase;
+use Orangecode\Acl\Repository\PermissoesAclRepository;
+use Orangecode\Service\Response\ServiceResponse;
+use Orangecode\Service\ServiceBase;
 
 class PermissoesAclService extends ServiceBase
 {
@@ -25,7 +25,7 @@ class PermissoesAclService extends ServiceBase
      */
     public function findModulo(): Collection
     {
-        return DB::table("acl_permissoes_modulo")
+        return DB::table('acl_permissoes_modulo')
             ->get()
             ->map(function ($item) {
                 $data = $item;
@@ -41,16 +41,17 @@ class PermissoesAclService extends ServiceBase
      */
     public function findGrupo(int $modulo = null): Collection
     {
-        return DB::table("acl_permissoes_grupo")
+        return DB::table('acl_permissoes_grupo')
             ->when(!empty($modulo) ? $modulo : false, function ($query, $modulo) {
-                $query->where("id_permissoes_modulo", $modulo);
+                $query->where('id_permissoes_modulo', $modulo);
             })
             ->get()
             ->map(function ($item) {
                 $data = $item;
                 $data->name = $item->nome;
                 return $data;
-            });;
+            });
+        ;
     }
 
     /**
@@ -60,10 +61,10 @@ class PermissoesAclService extends ServiceBase
      */
     public function findAll(int $grupo = null): Collection
     {
-        return DB::table("acl_permissoes")
-            ->where("ativo", "S")
+        return DB::table('acl_permissoes')
+            ->where('ativo', 'S')
             ->when(!empty($grupo) ? $grupo : false, function ($query, $grupo) {
-                $query->where("id_permissoes_grupo", $grupo);
+                $query->where('id_permissoes_grupo', $grupo);
             })
             ->get();
     }
@@ -76,20 +77,20 @@ class PermissoesAclService extends ServiceBase
      */
     public function findAllUser(int $grupo = null, int $user = null): Collection
     {
-        $permissoes = DB::table("usuario_filial_acl_perfil")
-            ->select(["acl_perfil_permissoes.id_permissoes"])
-            ->join("acl_perfil", "acl_perfil.id", "=", "usuario_filial_acl_perfil.id_acl_perfil")
-            ->join("acl_perfil_permissoes", "acl_perfil_permissoes.id_perfil", "=", "acl_perfil.id")
-            ->where("usuario_filial_acl_perfil.id_usuario_filial", "=", $user)
+        $permissoes = DB::table('usuario_filial_acl_perfil')
+            ->select(['acl_perfil_permissoes.id_permissoes'])
+            ->join('acl_perfil', 'acl_perfil.id', '=', 'usuario_filial_acl_perfil.id_acl_perfil')
+            ->join('acl_perfil_permissoes', 'acl_perfil_permissoes.id_perfil', '=', 'acl_perfil.id')
+            ->where('usuario_filial_acl_perfil.id_usuario_filial', '=', $user)
             ->get()
-            ->groupBy("id_permissoes")
+            ->groupBy('id_permissoes')
             ->keys()
             ->all();
-        return DB::table("acl_permissoes")
-            ->where("ativo", "S")
-            ->whereNotIn("id", $permissoes)
+        return DB::table('acl_permissoes')
+            ->where('ativo', 'S')
+            ->whereNotIn('id', $permissoes)
             ->when(!empty($grupo) ? $grupo : false, function ($query, $grupo) {
-                $query->where("id_permissoes_grupo", $grupo);
+                $query->where('id_permissoes_grupo', $grupo);
             })
             ->get();
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace Orangecode\Helpers\Service;
+namespace Orangecode\Service;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Orangecode\Helpers\Repository\Repository;
-use Orangecode\Helpers\Service\Response\ServiceResponse;
+use Orangecode\Repository\Repository;
+use Orangecode\Service\Response\ServiceResponse;
 
 abstract class ServiceBase implements Service
 {
@@ -22,10 +22,10 @@ abstract class ServiceBase implements Service
      * @param Repository $repository
      * @param ServiceResponse $response
      */
-    public function __construct(Repository $repository, ServiceResponse $response)
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
-        $this->response = $response;
+        $this->response = app()->make(ServiceResponse::class);
     }
 
     /**
@@ -50,8 +50,9 @@ abstract class ServiceBase implements Service
         try {
             return $this->repository->save($data);
         } catch (\Exception $exception) {
-            if ($exception->getCode() == "23000")
+            if ($exception->getCode() == '23000') {
                 abort(400, "Erro no processamento do banco de dados. ({$exception->getMessage()})");
+            }
             abort(500, $exception->getMessage());
         }
     }
@@ -66,8 +67,9 @@ abstract class ServiceBase implements Service
         try {
             $this->repository->remove($request->id);
         } catch (\Exception $exception) {
-            if ($exception->getCode() == "23000")
+            if ($exception->getCode() == '23000') {
                 abort(400, "Erro no processamento do banco de dados. ({$exception->getMessage()})");
+            }
             abort(500, $exception->getMessage());
         }
     }

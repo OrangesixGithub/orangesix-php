@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('SumHours')) {
     /**
      * Recebe um array de horas em string e retorna a soma das diferenças entre os pares consecutivos de horas
@@ -8,14 +9,18 @@ if (!function_exists('SumHours')) {
      */
     function SumHours(array $hours): float
     {
-        if (count($hours) % 2 !== 0) return 0;
+        if (count($hours) % 2 !== 0) {
+            return 0;
+        }
         $count = null;
         $sumHours = 0;
-        foreach ($hours as $key => $value)
-            if ($key % 2 === 0)
+        foreach ($hours as $key => $value) {
+            if ($key % 2 === 0) {
                 $count = hoursToDecimal($value);
-            else
+            } else {
                 $sumHours += (hoursToDecimal($value) - $count);
+            }
+        }
         return $sumHours;
     }
 }
@@ -39,7 +44,6 @@ if (!function_exists('IsDateInRange')) {
 }
 
 if (!function_exists('GetMonth')) {
-
     /**
      * Retorna o mês de acordo com paramentro
      * @param int $month
@@ -72,7 +76,7 @@ if (!function_exists('GetFeriado')) {
      * @param array $feriadoFacutativo
      * @return bool
      */
-    function GetFeriado (string $data = 'now', array $feriadoFacutativo = []): bool
+    function GetFeriado(string $data = 'now', array $feriadoFacutativo = []): bool
     {
         try {
             $data = new DateTime($data);
@@ -110,8 +114,7 @@ if (!function_exists('GetFeriado')) {
     }
 }
 
-if (!function_exists('DiasUteis'))
-{
+if (!function_exists('DiasUteis')) {
     /**
      *  Recebe como parametro um objeto data inicial e um objeto data final e faz a contagem dos dias
      *  sem considerar os dias sábado, domingo e feriados nacionais, retorna o total da contagem
@@ -119,23 +122,21 @@ if (!function_exists('DiasUteis'))
      * @param string $fim
      * @return int
      */
-    function DiasUteis (string $inicio, string $fim): int
+    function DiasUteis(string $inicio, string $fim): int
     {
         try {
             $inicio = new DateTime($inicio);
             $fim = new DateTime($fim);
             $dias = 0;
 
-            while ($inicio <= $fim)
-            {
-                if ($inicio->format('w') != 6 && $inicio->format('w') != 0 && !GetFeriado($inicio->format('Y-m-d')))
-                {
+            while ($inicio <= $fim) {
+                if ($inicio->format('w') != 6 && $inicio->format('w') != 0 && !GetFeriado($inicio->format('Y-m-d'))) {
                     $dias += 1;
                 }
                 $inicio = $inicio->add(date_interval_create_from_date_string('1 day'));
             }
             return $dias;
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             return 0;
         }
     }

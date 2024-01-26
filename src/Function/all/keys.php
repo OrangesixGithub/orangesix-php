@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('GenereteKey')) {
     /**
      * Gera senha de forma randomica.
@@ -13,7 +14,7 @@ if (!function_exists('GenereteKey')) {
         $keys  .= '-!-@-#-$-%-&-*-_';
         $keys = explode('-', $keys);
         $keysNumber = count($keys) - 1;
-        $newKey = "";
+        $newKey = '';
         for ($i = 0; $i < $number; $i++) {
             $newKey .= $keys[mt_rand(0, $keysNumber)];
         }

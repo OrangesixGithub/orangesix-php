@@ -1,6 +1,7 @@
 <?php
 
-namespace Orangecode\Helpers\Exceptions;
+namespace Orangecode\Exceptions;
+
 use Illuminate\Http\JsonResponse;
 
 class Field extends \Exception
@@ -11,7 +12,7 @@ class Field extends \Exception
     public function render(): JsonResponse
     {
         return response()->json([
-            "errors" => json_decode($this->message)
+            'errors' => json_decode($this->message)
         ], $this->getCode());
     }
 }

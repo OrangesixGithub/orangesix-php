@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Helpers\Service\Response\Enum;
+namespace Orangecode\Service\Response\Enum;
 
 enum Modal: string
 {
-    case Open = "open";
-    case Close = "close";
+    case Open = 'open';
+    case Close = 'close';
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Helpers\Acl\Model;
+namespace Orangecode\Acl\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,5 +10,5 @@ class Permissoes extends Model
     use HasFactory;
 
     /** @var string  */
-    public $table = "acl_permissoes";
+    public $table = 'acl_permissoes';
 }

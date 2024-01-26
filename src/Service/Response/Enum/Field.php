@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Helpers\Service\Response\Enum;
+namespace Orangecode\Service\Response\Enum;
 
 enum Field: string
 {
-    case Valid = "is-valid";
-    case Invalid = "is-invalid";
+    case Valid = 'is-valid';
+    case Invalid = 'is-invalid';
 }

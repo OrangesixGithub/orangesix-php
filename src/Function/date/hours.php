@@ -1,5 +1,6 @@
 <?php
-if (!function_exists("DecimalToHours")){
+
+if (!function_exists('DecimalToHours')) {
     /**
      * Converte decimal para horas
      * @param float $decimal
@@ -13,8 +14,9 @@ if (!function_exists("DecimalToHours")){
         if (isset($division[1])) {
             $min = str_pad($division[1], 2, '0', STR_PAD_RIGHT);
             $min = round(($min * 60) / 100, 0, PHP_ROUND_HALF_UP);
-        } else
+        } else {
             $min = 0;
+        }
         $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
         $min = str_pad($min, 2, '0', STR_PAD_LEFT);
         return $hours . ':' . $min;
@@ -30,8 +32,9 @@ if (!function_exists('HoursToDecimal')) {
      */
     function HoursToDecimal(string $hours, int $decimais = 2): float
     {
-        if (!strstr($hours, ':'))
+        if (!strstr($hours, ':')) {
             return 0;
+        }
         $arrHours = explode(':', $hours);
         $valueHours = (int)$arrHours[0];
         $valueMinute = (int)$arrHours[1];
@@ -48,13 +51,14 @@ if (!function_exists('HoursToMinute')) {
      */
     function HoursToMinute(string $value): int
     {
-        if (strstr($value, ":")) {
-            $arrayValue = explode(":", $value);
+        if (strstr($value, ':')) {
+            $arrayValue = explode(':', $value);
             $valorMin = (int)$arrayValue[1];
             $valorHours = (int)$arrayValue[0];
             return (int)(($valorHours * 60) + $valorMin);
-        } else
+        } else {
             return 0;
+        }
     }
 }
 
@@ -67,14 +71,16 @@ if (!function_exists('MinuteToHours')) {
     function MinuteToHours(int|float $valor): string
     {
         $division = number_format($valor / 60, 2, ',', ''); // valor decimal
-        $arrayValue = explode(",", $division);
+        $arrayValue = explode(',', $division);
         $valueHours = $arrayValue[0];
         $valueMin = round(($arrayValue[1] * 60) / 100);
-        if (strlen($valueHours) == 1)
-            $valueHours = "0" . $valueHours;
-        if (strlen($valueMin) < 2)
-            $valueMin = "0" . $valueMin;
-        return $valueHours . ":" . $valueMin;
+        if (strlen($valueHours) == 1) {
+            $valueHours = '0' . $valueHours;
+        }
+        if (strlen($valueMin) < 2) {
+            $valueMin = '0' . $valueMin;
+        }
+        return $valueHours . ':' . $valueMin;
     }
 }
 
