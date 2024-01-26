@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Orangecode\Repository\Repository;
+use Orangecode\Repository\RepositoryAutoInstance;
 use Orangecode\Service\Response\ServiceResponse;
 
 abstract class ServiceBase implements Service
 {
     use ServiceDataBase;
-    use AutoInstance;
+    use ServiceAutoInstance;
+    use RepositoryAutoInstance;
 
     /** @var Repository */
     protected Repository $repository;
@@ -50,13 +52,16 @@ abstract class ServiceBase implements Service
     }
 
     /**
-* @param string $name
-* @return mixed
-* @throws BindingResolutionException
+     * @param string $name
+     * @return mixed
+     * @throws BindingResolutionException
      */
     public function __get(string $name)
     {
-        return $this->instanceAutoService($name);
+        if (strpos($name, 'service') !== false) {
+            return $this->instanceAutoService($name);
+        }
+        return $this->instanceAutoRepository($name);
     }
 
     /**

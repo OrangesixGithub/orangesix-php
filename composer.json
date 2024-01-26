@@ -11,6 +11,7 @@
       "Orangecode\\": "src"
     },
     "files": [
+      "src/Function/all/class.php",
       "src/Function/all/keys.php",
       "src/Function/all/convert.php",
       "src/Function/date/hours.php",

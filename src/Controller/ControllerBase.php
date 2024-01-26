@@ -4,12 +4,12 @@ namespace Orangecode\Controller;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Routing\Controller;
-use Orangecode\Service\AutoInstance;
+use Orangecode\Service\ServiceAutoInstance;
 use Orangecode\Service\Response\ServiceResponse;
 
 abstract class ControllerBase extends Controller
 {
-    use AutoInstance;
+    use ServiceAutoInstance;
 
     protected ServiceResponse $response;
 
