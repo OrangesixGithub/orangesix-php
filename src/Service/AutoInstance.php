@@ -1,8 +1,8 @@
 <?php
 
-namespace Orangecode\Controller;
+namespace Orangecode\Service;
 
-trait Service
+trait AutoInstance
 {
     /**
      * @param string $class

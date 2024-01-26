@@ -2,6 +2,7 @@
 
 namespace Orangecode\Service;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Orangecode\Service\Response\ServiceResponse;
 abstract class ServiceBase implements Service
 {
     use ServiceDataBase;
+    use AutoInstance;
 
     /** @var Repository */
     protected Repository $repository;
@@ -45,6 +47,16 @@ abstract class ServiceBase implements Service
         } else {
             throw new \Exception('Método não existe no service ou repository.', 500);
         }
+    }
+
+    /**
+* @param string $name
+* @return mixed
+* @throws BindingResolutionException
+     */
+    public function __get(string $name)
+    {
+        return $this->instanceAutoService($name);
     }
 
     /**
