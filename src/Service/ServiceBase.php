@@ -20,7 +20,7 @@ abstract class ServiceBase implements Service
 
     /**
      * @param Repository $repository
-     * @param ServiceResponse $response
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function __construct(Repository $repository)
     {
@@ -29,12 +29,31 @@ abstract class ServiceBase implements Service
     }
 
     /**
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     * @throws \Exception
+     */
+    public function __call(string $name, array $arguments)
+    {
+        if (method_exists($this->repository, $name)) {
+            if (empty($arguments)) {
+                return $this->repository->$name();
+            } else {
+                return $this->repository->$name($arguments[0]);
+            }
+        } else {
+            throw new \Exception('Método não existe no service ou repository.', 500);
+        }
+    }
+
+    /**
      * Realiza a pesquisa dos dados
      * @param int|null $id
      * @param array|null $where
      * @return Collection|Model|null
      */
-    public function find(int $id = null): Collection | Model | null
+    public function find(int $id = null): Collection|Model|null
     {
         return $this->repository->find($id);
     }
