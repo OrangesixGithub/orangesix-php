@@ -5,7 +5,6 @@ namespace Orangecode\Controller;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Routing\Controller;
 use Orangecode\Service\Response\ServiceResponse;
-use Orangecode\Service\ServiceBase;
 
 abstract class ControllerBase extends Controller
 {
@@ -13,14 +12,9 @@ abstract class ControllerBase extends Controller
 
     protected ServiceResponse $response;
 
-    protected ServiceBase|string|null $service;
-
-    public function __construct(ServiceBase $service = null)
+    public function __construct()
     {
         $this->response = app()->make(ServiceResponse::class);
-        $this->service = empty($service) || !is_string($service)
-            ? app()->make(ServiceBase::class)
-            : app()->make($service);
     }
 
     /**
