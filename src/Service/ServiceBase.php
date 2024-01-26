@@ -3,9 +3,8 @@
 namespace Orangecode\Service;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Orangecode\Repository\Repository;
 use Orangecode\Repository\RepositoryAutoInstance;
 use Orangecode\Service\Response\ServiceResponse;
@@ -65,12 +64,11 @@ abstract class ServiceBase implements Service
     }
 
     /**
-     * Realiza a pesquisa dos dados
-     * @param int|null $id
-     * @param array|null $where
-     * @return Collection|Model|null
+     * Realiza a pesquisa do modelo
+     * @param int $id
+     * @return mixed
      */
-    public function find(int $id = null): Collection|Model|null
+    public function find(int $id): mixed
     {
         return $this->repository->find($id);
     }

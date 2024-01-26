@@ -3,16 +3,15 @@
 namespace Orangecode\Service;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 interface Service
 {
     /**
-     * @param int|null $id
-     * @return Collection|Model|null
+     * @param int $id
+     * @return mixed
      */
-    public function find(int $id = null): Collection | Model | null;
+    public function find(int $id): mixed;
 
     /**
      * @param Request $request

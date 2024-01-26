@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Model;
+namespace Orangecode\Models;
 
 trait ModelAutoInstance
 {
@@ -12,7 +12,7 @@ trait ModelAutoInstance
     private function instanceAutoModel(string $class): mixed
     {
         $model = str_replace('model', '', $class) . 'Model';
-        $instance = getClass(app_path('Service'), $model);
+        $instance = getClass(app_path('Models'), $model);
         if (!empty($instance)) {
             $class = $instance['namespace'] . DIRECTORY_SEPARATOR . $instance['class'];
             return app()->make($class);

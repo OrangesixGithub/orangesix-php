@@ -4,8 +4,7 @@ namespace Orangecode\Repository;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Orangecode\Model\ModelAutoInstance;
+use Orangecode\Models\ModelAutoInstance;
 
 trait RepositoryDataBase
 {
@@ -56,19 +55,11 @@ trait RepositoryDataBase
     }
 
     /**
-     * @param int|null $id
-     * @return Collection|Model|null
+     * @param int $id
+     * @return mixed
      */
-    public function find(int $id): Model|null
+    public function find(int $id): mixed
     {
         return $this->model::findOrFail($id);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function findAll(): Collection
-    {
-        return $this->model::all();
     }
 }

@@ -32,7 +32,7 @@ if (!function_exists('getNamespace')) {
      * @param string $filePath
      * @return array|null
      */
-    function getNamespace(string $filePath): ?array
+    function getNamespace(string $filePath): ?string
     {
         $content = file_get_contents($filePath);
         $namespaceRegex = '/namespace\s+([^\s;]+)/i';

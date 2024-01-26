@@ -3,7 +3,6 @@
 namespace Orangecode\Repository;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 interface Repository
 {
@@ -25,8 +24,8 @@ interface Repository
     public function remove(int $id): void;
 
     /**
-     * @param int|null $id
-     * @return Collection|Model|null
+     * @param int $id
+     * @return mixed
      */
-    public function find(int $id = null): Collection | Model | null;
+    public function find(int $id): mixed;
 }
