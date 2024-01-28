@@ -13,12 +13,16 @@ abstract class ControllerBase extends Controller
 
     protected ServiceResponse $response;
 
+    /** @var array  */
+    private array $autoInstance = [];
+
     /**
      * @throws BindingResolutionException
      */
-    public function __construct()
+    public function __construct(?array $autoInstance = null)
     {
         $this->response = app()->make(ServiceResponse::class);
+        $this->autoInstance = $autoInstance;
     }
 
     /**
@@ -28,6 +32,6 @@ abstract class ControllerBase extends Controller
      */
     public function __get(string $name)
     {
-        return $this->instanceAutoService($name);
+        return $this->instanceAutoService($name, $this->autoInstance['service'] ?? null);
     }
 }

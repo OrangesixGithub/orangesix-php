@@ -21,14 +21,18 @@ abstract class ServiceBase implements Service
     /** @var ServiceResponse */
     protected ServiceResponse $response;
 
+    /** @var array  */
+    private array $autoInstance = [];
+
     /**
      * @param Repository $repository
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, ?array $autoInstance = null)
     {
         $this->repository = $repository;
         $this->response = app()->make(ServiceResponse::class);
+        $this->autoInstance = $autoInstance;
     }
 
     /**
@@ -58,9 +62,9 @@ abstract class ServiceBase implements Service
     public function __get(string $name)
     {
         if (strpos($name, 'service') !== false) {
-            return $this->instanceAutoService($name);
+            return $this->instanceAutoService($name, $this->autoInstance['service'] ?? null);
         }
-        return $this->instanceAutoRepository($name);
+        return $this->instanceAutoRepository($name, $this->autoInstance['repository'] ?? null);
     }
 
     /**

@@ -10,6 +10,9 @@ trait RepositoryDataBase
 {
     use ModelAutoInstance;
 
+    /** @var array  */
+    private array $autoInstance = [];
+
     /**
      * @param string $name
      * @return mixed
@@ -17,7 +20,7 @@ trait RepositoryDataBase
      */
     public function __get(string $name)
     {
-        return $this->instanceAutoModel($name);
+        return $this->instanceAutoModel($name, $this->autoInstance['model'] ?? null);
     }
 
     /**
