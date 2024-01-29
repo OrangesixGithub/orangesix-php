@@ -22,7 +22,7 @@ abstract class ServiceBase implements Service
     protected ServiceResponse $response;
 
     /** @var array  */
-    private array $autoInstance = [];
+    private ?array $autoInstance;
 
     /**
      * @param Repository $repository
@@ -44,11 +44,12 @@ abstract class ServiceBase implements Service
     public function __call(string $name, array $arguments)
     {
         if (method_exists($this->repository, $name)) {
-            if (empty($arguments)) {
-                return $this->repository->$name();
-            } else {
-                return $this->repository->$name($arguments[0]);
+            $reflection = new \ReflectionMethod($this->repository, $name);
+            $args = $reflection->getNumberOfParameters();
+            for ($i = 0; $i < $args; $i++) {
+                ${'arg_' . $i} = $arguments[$i] ?? null;
             }
+            return $this->repository->$name($arg_0 ?? null, $arg_1 ?? null, $arg_2 ?? null, $arg_3 ?? null, $arg_4 ?? null);
         } else {
             throw new \Exception('Método não existe no service ou repository.', 500);
         }

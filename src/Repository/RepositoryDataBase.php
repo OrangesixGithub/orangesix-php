@@ -5,13 +5,16 @@ namespace Orangecode\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Orangecode\Models\ModelAutoInstance;
+use Orangecode\Service\ServiceAutoInstance;
 
 trait RepositoryDataBase
 {
+    use RepositoryTransferList;
     use ModelAutoInstance;
+    use ServiceAutoInstance;
 
     /** @var array  */
-    private array $autoInstance = [];
+    private ?array $autoInstance;
 
     /**
      * @param string $name
@@ -20,6 +23,9 @@ trait RepositoryDataBase
      */
     public function __get(string $name)
     {
+        if (strpos($name, 'service') !== false) {
+            return $this->instanceAutoService($name, $this->autoInstance['service'] ?? null);
+        }
         return $this->instanceAutoModel($name, $this->autoInstance['model'] ?? null);
     }
 

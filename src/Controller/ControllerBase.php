@@ -14,7 +14,7 @@ abstract class ControllerBase extends Controller
     protected ServiceResponse $response;
 
     /** @var array  */
-    private array $autoInstance = [];
+    private ?array $autoInstance;
 
     /**
      * @throws BindingResolutionException

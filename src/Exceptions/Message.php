@@ -17,7 +17,7 @@ class Message extends \Exception
             default => MessageEnum::Error,
         };
         return response()->json([
-            'message' => new \Orangecode\Helpers\Service\Response\Message($this->getMessage(), $type)
+            'message' => new \Orangecode\Service\Response\Message($this->getMessage(), $type)
         ], $this->getCode());
     }
 }
