@@ -2,22 +2,51 @@
 
 namespace Orangecode\Acl\Repository;
 
-use Orangecode\Acl\Model\PerfilPermissoes;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Orangecode\Acl\Model\PerfilPermissoesModel;
+use Orangecode\Acl\Model\PermissoesModel;
 use Orangecode\Repository\Repository;
 use Orangecode\Repository\RepositoryDataBase;
 
+/**
+ * Repository - Perfil Permissões Acl
+ */
 class PerfilPermissoesAclRepository implements Repository
 {
     use RepositoryDataBase;
 
-    /** @var PerfilPermissoes  */
-    private PerfilPermissoes $model;
+    private PerfilPermissoesModel $model;
+
+    private PermissoesModel $modelPermissoes;
+
+    public function __construct(
+        PerfilPermissoesModel $perfil,
+        PermissoesModel       $modelPermissoes
+    ) {
+        $this->model = $perfil;
+        $this->modelPermissoes = $modelPermissoes;
+    }
 
     /**
-     * @param PerfilPermissoes $perfil
+     * Realiza a pesquisa das permissões por perfil - Perfil Pemissões Acl
      */
-    public function __construct(PerfilPermissoes $perfil)
+    public function findAll(int $perfil, int $grupo): Collection
     {
-        $this->model = $perfil;
+        $perfilPermissoes = DB::table('acl_perfil_permissoes')
+            ->where('id_perfil', $perfil)
+            ->get();
+        return $this->modelPermissoes::where('id_permissoes_grupo', $grupo)
+            ->where('ativo', 'S')
+            ->orderBy('id')
+            ->get()
+            ->map(function ($item) use ($perfilPermissoes) {
+                $data = $item;
+                $data->active = !is_bool($perfilPermissoes->search(function ($value) use ($item) {
+                    return $item->id == $value->id_permissoes;
+                }));
+                $data->label = $item->id . ' -> ' . $item->nome;
+                return $data;
+            });
     }
 }

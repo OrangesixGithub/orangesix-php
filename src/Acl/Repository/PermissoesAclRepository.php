@@ -2,22 +2,100 @@
 
 namespace Orangecode\Acl\Repository;
 
-use Orangecode\Acl\Model\Permissoes;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Orangecode\Acl\Model\PermissoesGrupoModel;
+use Orangecode\Acl\Model\PermissoesModel;
+use Orangecode\Acl\Model\PermissoesModuloModel;
 use Orangecode\Repository\Repository;
 use Orangecode\Repository\RepositoryDataBase;
 
+/**
+ * Repository - Permissões Acl
+ */
 class PermissoesAclRepository implements Repository
 {
     use RepositoryDataBase;
 
-    /** @var Permissoes  */
-    private Permissoes $model;
+    private PermissoesModel $model;
+
+    private PermissoesGrupoModel $permissoesGrupo;
+
+    private PermissoesModuloModel $permissoesModulo;
+
+    public function __construct(
+        PermissoesModel       $permissoes,
+        PermissoesGrupoModel  $permissoesGrupo,
+        PermissoesModuloModel $permissoesModulo
+    ) {
+        $this->model = $permissoes;
+        $this->permissoesModulo = $permissoesModulo;
+        $this->permissoesGrupo = $permissoesGrupo;
+    }
 
     /**
-     * @param Permissoes $perfil
+     * Realiza a pesquisa - Permissões Acl
      */
-    public function __construct(Permissoes $perfil)
+    public function findAll(int $grupo = null): Collection
     {
-        $this->model = $perfil;
+        return $this->model::select('*')
+            ->where('ativo', 'S')
+            ->when(!empty($grupo) ? $grupo : false, function ($query, $grupo) {
+                $query->where('id_permissoes_grupo', $grupo);
+            })
+            ->get();
+    }
+
+    /**
+     * Realiza a pesquisa dos módulos - Permissões Acl
+     */
+    public function findModulo(): Collection
+    {
+        return $this->permissoesModulo::all()
+            ->map(function ($item) {
+                $data = $item;
+                $data->name = $item->nome;
+                return $data;
+            });
+    }
+
+    /**
+     * Realiza a pesquisa do grupo de permissões - Permissões Acl
+     */
+    public function findGrupo(int $modulo = null): Collection
+    {
+        return $this->permissoesGrupo::select('*')
+            ->when(!empty($modulo) ? $modulo : false, function ($query, $modulo) {
+                $query->where('id_permissoes_modulo', $modulo);
+            })
+            ->get()
+            ->map(function ($item) {
+                $data = $item;
+                $data->name = $item->nome;
+                return $data;
+            });
+    }
+
+    /**
+     * Realiza a pesquisa permissões por usuário - Permissões Acl
+     */
+    public function findAllUser(?int $grupo = null, ?int $user = null): Collection
+    {
+        $permissoes = DB::table('usuario_filial_acl_perfil')
+            ->select(['acl_perfil_permissoes.id_permissoes'])
+            ->join('acl_perfil', 'acl_perfil.id', '=', 'usuario_filial_acl_perfil.id_acl_perfil')
+            ->join('acl_perfil_permissoes', 'acl_perfil_permissoes.id_perfil', '=', 'acl_perfil.id')
+            ->where('usuario_filial_acl_perfil.id_usuario_filial', '=', $user)
+            ->get()
+            ->groupBy('id_permissoes')
+            ->keys()
+            ->all();
+        return $this->model::select('*')
+            ->where('ativo', 'S')
+            ->whereNotIn('id', $permissoes)
+            ->when(!empty($grupo) ? $grupo : false, function ($query, $grupo) {
+                $query->where('id_permissoes_grupo', $grupo);
+            })
+            ->get();
     }
 }

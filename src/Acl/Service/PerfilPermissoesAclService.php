@@ -3,50 +3,20 @@
 namespace Orangecode\Acl\Service;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Orangecode\Service\ServiceBase;
-use Orangecode\Service\Response\ServiceResponse;
 use Orangecode\Acl\Repository\PerfilPermissoesAclRepository;
 
+/**
+ * Service - Perfil Permissões ACL
+ *
+ * @method findAll(int $perfil, int $grupo)
+ */
 class PerfilPermissoesAclService extends ServiceBase
 {
-    /** @var PermissoesAclService  */
-    private PermissoesAclService $aclPermissoes;
-
-    /**
-     * @param PerfilPermissoesAclRepository $repository
-     * @param ServiceResponse $response
-     * @param PermissoesAclService $aclPermissoes
-     */
-    public function __construct(PerfilPermissoesAclRepository $repository, ServiceResponse $response, PermissoesAclService $aclPermissoes)
+    public function __construct(PerfilPermissoesAclRepository $repository)
     {
-        parent::__construct($repository, $response);
-        $this->aclPermissoes = $aclPermissoes;
-    }
-
-    /**
-     * Realiza a pesquisa das permissões para perfil
-     * @param int $perfil
-     * @return Collection
-     */
-    public function findAll(int $perfil, int $grupo): Collection
-    {
-        $perfilPermissoes = DB::table('acl_perfil_permissoes')
-            ->where('id_perfil', $perfil)
-            ->get();
-        return $this->aclPermissoes->getModel()::where('id_permissoes_grupo', $grupo)
-            ->where('ativo', 'S')
-            ->orderBy('id')
-            ->get()
-            ->map(function ($item) use ($perfilPermissoes) {
-                $data = $item;
-                $data->active = !is_bool($perfilPermissoes->search(function ($value) use ($item) {
-                    return $item->id == $value->id_permissoes;
-                }));
-                $data->label = $item->id . ' -> ' . $item->nome;
-                return $data;
-            });
+        parent::__construct($repository);
     }
 
     /**

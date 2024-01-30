@@ -2,22 +2,61 @@
 
 namespace Orangecode\Acl\Repository;
 
-use Orangecode\Acl\Model\PermissoesUsuario;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Orangecode\Acl\Model\PermissoesModel;
+use Orangecode\Acl\Model\PermissoesUsuarioModel;
 use Orangecode\Repository\Repository;
 use Orangecode\Repository\RepositoryDataBase;
 
+/**
+ * Repository - Permissões Usuário Acl
+ */
 class PermissoesUsuarioAclRepository implements Repository
 {
     use RepositoryDataBase;
 
-    /** @var PermissoesUsuario  */
-    private PermissoesUsuario $model;
+    private PermissoesUsuarioModel $model;
+
+    private PermissoesModel $permissoes;
+
+    public function __construct(
+        PermissoesUsuarioModel $model,
+        PermissoesModel        $permissoes
+    ) {
+        $this->model = $model;
+        $this->permissoes = $permissoes;
+    }
 
     /**
-     * @param PermissoesUsuario $perfil
+     * Realiza a pesquisa das permissões por usuário - Permissões Usuário Acl
      */
-    public function __construct(PermissoesUsuario $perfil)
+    public function findAll(?int $grupo, ?int $user): Collection
     {
-        $this->model = $perfil;
+        $permissoesUser = $this->model::select('*')
+            ->where('id_usuario_filial', '=', $user)
+            ->get();
+        $permissoes = DB::table('usuario_filial_acl_perfil')
+            ->select(['acl_perfil_permissoes.id_permissoes'])
+            ->join('acl_perfil', 'acl_perfil.id', '=', 'usuario_filial_acl_perfil.id_acl_perfil')
+            ->join('acl_perfil_permissoes', 'acl_perfil_permissoes.id_perfil', '=', 'acl_perfil.id')
+            ->where('usuario_filial_acl_perfil.id_usuario_filial', '=', $user)
+            ->get()
+            ->groupBy('id_permissoes')
+            ->keys()
+            ->all();
+        return $this->permissoes::where('id_permissoes_grupo', $grupo)
+            ->whereNotIn('id', $permissoes)
+            ->where('ativo', 'S')
+            ->orderBy('id')
+            ->get()
+            ->map(function ($item) use ($permissoesUser) {
+                $data = $item;
+                $data->active = !is_bool($permissoesUser->search(function ($value) use ($item) {
+                    return $item->id == $value->id_permissoes;
+                }));
+                $data->label = $item->id . ' -> ' . $item->nome;
+                return $data;
+            });
     }
 }

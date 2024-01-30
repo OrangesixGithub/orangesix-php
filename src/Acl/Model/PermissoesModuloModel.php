@@ -5,10 +5,10 @@ namespace Orangecode\Acl\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PerfilPermissoes extends Model
+class PermissoesModuloModel extends Model
 {
     use HasFactory;
 
-    /** @var string  */
-    public $table = 'acl_perfil_permissoes';
+    /** @var string */
+    public $table = 'acl_permissoes_Modulo';
 }
