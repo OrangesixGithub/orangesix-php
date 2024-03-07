@@ -21,7 +21,7 @@ abstract class ServiceBase implements Service
     /** @var ServiceResponse */
     protected ServiceResponse $response;
 
-    /** @var array  */
+    /** @var array */
     private ?array $autoInstance;
 
     /**
@@ -90,7 +90,10 @@ abstract class ServiceBase implements Service
             return $this->repository->save($data);
         } catch (\Exception $exception) {
             if ($exception->getCode() == '23000') {
-                abort(400, "Erro no processamento do banco de dados. ({$exception->getMessage()})");
+                abort(400, "Este registro está sendo utilizado em outro módulo do sistema.
+                    <p class='mt-2'><a class='j_message_detail d-flex w-100 fs-7 text-white fw-semibold' href='#'><i class='bi bi-eye me-1'></i>Veja detalhe:</a></p>
+                    <p id='j_message_detail_view' class='fs-7 mt-2' style='display: none'>({$exception->getMessage()})</p>
+               ");
             }
             abort(500, $exception->getMessage());
         }
@@ -107,7 +110,10 @@ abstract class ServiceBase implements Service
             $this->repository->remove($request->id);
         } catch (\Exception $exception) {
             if ($exception->getCode() == '23000') {
-                abort(400, "Erro no processamento do banco de dados. ({$exception->getMessage()})");
+                abort(400, "Este registro está sendo utilizado em outro módulo do sistema.
+                    <p class='mt-2'><a class='j_message_detail d-flex w-100 fs-7 text-white fw-semibold' href='#'><i class='bi bi-eye me-1'></i>Veja detalhe:</a></p>
+                    <p id='j_message_detail_view' class='fs-7 mt-2' style='display: none'>({$exception->getMessage()})</p>
+               ");
             }
             abort(500, $exception->getMessage());
         }
