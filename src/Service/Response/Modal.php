@@ -1,8 +1,8 @@
 <?php
 
-namespace Orangecode\Service\Response;
+namespace Orangesix\Service\Response;
 
-use Orangecode\Service\Response\Enum\Modal as ModalEnum;
+use Orangesix\Service\Response\Enum\Modal as ModalEnum;
 
 class Modal
 {

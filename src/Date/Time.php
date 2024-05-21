@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Date;
+namespace Orangesix\Date;
 
 class Time
 {

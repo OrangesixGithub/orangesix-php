@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Service\Response;
+namespace Orangesix\Service\Response;
 
-use Orangecode\Exceptions\Field;
-use Orangecode\Service\Response\Enum\Message;
+use Orangesix\Exceptions\Field;
+use Orangesix\Service\Response\Enum\Message;
 
 class ServiceResponse
 {

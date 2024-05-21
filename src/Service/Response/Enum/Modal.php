@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Service\Response\Enum;
+namespace Orangesix\Service\Response\Enum;
 
 enum Modal: string
 {

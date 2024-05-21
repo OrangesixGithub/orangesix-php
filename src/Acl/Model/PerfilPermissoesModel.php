@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Acl\Model;
+namespace Orangesix\Acl\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

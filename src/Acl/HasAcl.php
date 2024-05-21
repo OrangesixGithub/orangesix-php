@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Acl;
+namespace Orangesix\Acl;
 
 use Illuminate\Support\Facades\DB;
-use Orangecode\Acl\Exceptions\Acl;
+use Orangesix\Acl\Exceptions\Acl;
 
 trait HasAcl
 {

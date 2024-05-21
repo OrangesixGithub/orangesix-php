@@ -1,11 +1,11 @@
 <?php
 
-namespace Orangecode\Acl\Repository;
+namespace Orangesix\Acl\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Orangecode\Acl\Model\PerfilModel;
-use Orangecode\Repository\Repository;
-use Orangecode\Repository\RepositoryDataBase;
+use Orangesix\Acl\Model\PerfilModel;
+use Orangesix\Repository\Repository;
+use Orangesix\Repository\RepositoryDataBase;
 
 /**
  * Repository - Perfil Acl

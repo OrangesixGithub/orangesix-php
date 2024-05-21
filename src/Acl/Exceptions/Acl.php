@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Acl\Exceptions;
+namespace Orangesix\Acl\Exceptions;
 
-use Orangecode\Service\Response\Enum\Message;
-use Orangecode\Service\Response\ServiceResponse;
+use Orangesix\Service\Response\Enum\Message;
+use Orangesix\Service\Response\ServiceResponse;
 
 class Acl extends \Exception
 {

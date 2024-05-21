@@ -1,11 +1,11 @@
 <?php
 
-namespace Orangecode\Acl\Service;
+namespace Orangesix\Acl\Service;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Orangecode\Service\ServiceBase;
-use Orangecode\Acl\Repository\PermissoesUsuarioAclRepository;
+use Orangesix\Service\ServiceBase;
+use Orangesix\Acl\Repository\PermissoesUsuarioAclRepository;
 
 /**
  * Service - Permissões Usuário Acl

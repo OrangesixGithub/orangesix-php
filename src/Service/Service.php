@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Service;
+namespace Orangesix\Service;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;

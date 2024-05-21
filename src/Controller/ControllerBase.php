@@ -1,11 +1,11 @@
 <?php
 
-namespace Orangecode\Controller;
+namespace Orangesix\Controller;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Routing\Controller;
-use Orangecode\Service\ServiceAutoInstance;
-use Orangecode\Service\Response\ServiceResponse;
+use Orangesix\Service\ServiceAutoInstance;
+use Orangesix\Service\Response\ServiceResponse;
 
 abstract class ControllerBase extends Controller
 {

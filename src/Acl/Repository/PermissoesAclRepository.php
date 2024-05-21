@@ -1,14 +1,14 @@
 <?php
 
-namespace Orangecode\Acl\Repository;
+namespace Orangesix\Acl\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Orangecode\Acl\Model\PermissoesGrupoModel;
-use Orangecode\Acl\Model\PermissoesModel;
-use Orangecode\Acl\Model\PermissoesModuloModel;
-use Orangecode\Repository\Repository;
-use Orangecode\Repository\RepositoryDataBase;
+use Orangesix\Acl\Model\PermissoesGrupoModel;
+use Orangesix\Acl\Model\PermissoesModel;
+use Orangesix\Acl\Model\PermissoesModuloModel;
+use Orangesix\Repository\Repository;
+use Orangesix\Repository\RepositoryDataBase;
 
 /**
  * Repository - Permissões Acl

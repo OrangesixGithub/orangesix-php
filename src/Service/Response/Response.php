@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Service\Response;
+namespace Orangesix\Service\Response;
 
 class Response
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Orangecode\Acl\Service;
+namespace Orangesix\Acl\Service;
 
 use Illuminate\Http\Request;
-use Orangecode\Service\ServiceBase;
-use Orangecode\Acl\Repository\PerfilAclRepository;
+use Orangesix\Service\ServiceBase;
+use Orangesix\Acl\Repository\PerfilAclRepository;
 
 /**
  * Service - Perfil Acl

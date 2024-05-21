@@ -1,8 +1,8 @@
 <?php
 
-namespace Orangecode\Service\Response;
+namespace Orangesix\Service\Response;
 
-use Orangecode\Service\Response\Enum\Field as FieldEnum;
+use Orangesix\Service\Response\Enum\Field as FieldEnum;
 
 class Field
 {

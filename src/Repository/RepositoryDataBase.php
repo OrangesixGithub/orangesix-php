@@ -1,11 +1,11 @@
 <?php
 
-namespace Orangecode\Repository;
+namespace Orangesix\Repository;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
-use Orangecode\Models\ModelAutoInstance;
-use Orangecode\Service\ServiceAutoInstance;
+use Orangesix\Models\ModelAutoInstance;
+use Orangesix\Service\ServiceAutoInstance;
 
 trait RepositoryDataBase
 {

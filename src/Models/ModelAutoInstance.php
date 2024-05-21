@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Models;
+namespace Orangesix\Models;
 
 trait ModelAutoInstance
 {

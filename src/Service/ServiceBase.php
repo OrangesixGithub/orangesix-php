@@ -1,13 +1,13 @@
 <?php
 
-namespace Orangecode\Service;
+namespace Orangesix\Service;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Orangecode\Repository\Repository;
-use Orangecode\Repository\RepositoryAutoInstance;
-use Orangecode\Service\Response\ServiceResponse;
+use Orangesix\Repository\Repository;
+use Orangesix\Repository\RepositoryAutoInstance;
+use Orangesix\Service\Response\ServiceResponse;
 
 abstract class ServiceBase implements Service
 {

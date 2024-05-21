@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Exceptions;
+namespace Orangesix\Exceptions;
 
 use Illuminate\Http\JsonResponse;
-use Orangecode\Service\Response\Enum\Message as MessageEnum;
+use Orangesix\Service\Response\Enum\Message as MessageEnum;
 
 class Message extends \Exception
 {
@@ -17,7 +17,7 @@ class Message extends \Exception
             default => MessageEnum::Error,
         };
         return response()->json([
-            'message' => new \Orangecode\Service\Response\Message($this->getMessage(), $type)
+            'message' => new \Orangesix\Service\Response\Message($this->getMessage(), $type)
         ], $this->getCode());
     }
 }

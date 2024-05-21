@@ -1,8 +1,8 @@
 <?php
 
-namespace Orangecode\Service\Response;
+namespace Orangesix\Service\Response;
 
-use Orangecode\Service\Response\Enum\Message as MessageEnum;
+use Orangesix\Service\Response\Enum\Message as MessageEnum;
 
 class Message
 {

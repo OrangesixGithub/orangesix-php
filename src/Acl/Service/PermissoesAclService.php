@@ -1,9 +1,9 @@
 <?php
 
-namespace Orangecode\Acl\Service;
+namespace Orangesix\Acl\Service;
 
-use Orangecode\Acl\Repository\PermissoesAclRepository;
-use Orangecode\Service\ServiceBase;
+use Orangesix\Acl\Repository\PermissoesAclRepository;
+use Orangesix\Service\ServiceBase;
 
 /**
  * Service - Permissões Acl

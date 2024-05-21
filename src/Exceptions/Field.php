@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Exceptions;
+namespace Orangesix\Exceptions;
 
 use Illuminate\Http\JsonResponse;
 

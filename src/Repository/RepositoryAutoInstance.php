@@ -1,6 +1,6 @@
 <?php
 
-namespace Orangecode\Repository;
+namespace Orangesix\Repository;
 
 trait RepositoryAutoInstance
 {
