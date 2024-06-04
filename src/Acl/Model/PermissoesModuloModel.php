@@ -10,5 +10,5 @@ class PermissoesModuloModel extends Model
     use HasFactory;
 
     /** @var string */
-    public $table = 'acl_permissoes_Modulo';
+    public $table = 'acl_permissoes_modulo';
 }

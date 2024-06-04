@@ -14,7 +14,7 @@ trait ServiceAutoInstance
         $service = str_replace('service', '', $class) . 'Service';
         $instance = getClass(empty($path) ? app_path('Service') : $path, $service);
         if (!empty($instance)) {
-            $class = $instance['namespace'] . DIRECTORY_SEPARATOR . $instance['class'];
+            $class = $instance['namespace'] . '\\' . $instance['class'];
             return app()->make($class);
         }
         return null;

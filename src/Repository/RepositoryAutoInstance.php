@@ -14,7 +14,7 @@ trait RepositoryAutoInstance
         $repository = str_replace('repository', '', $class) . 'Repository';
         $instance = getClass(empty($path) ? app_path('Repository') : $path, $repository);
         if (!empty($instance)) {
-            $class = $instance['namespace'] . DIRECTORY_SEPARATOR . $instance['class'];
+            $class = $instance['namespace'] . '\\' . $instance['class'];
             return app()->make($class);
         }
         return null;

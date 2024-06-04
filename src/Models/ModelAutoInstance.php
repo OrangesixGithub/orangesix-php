@@ -14,7 +14,7 @@ trait ModelAutoInstance
         $model = str_replace('model', '', $class) . 'Model';
         $instance = getClass(empty($path) ? app_path('Models') : $path, $model);
         if (!empty($instance)) {
-            $class = $instance['namespace'] . DIRECTORY_SEPARATOR . $instance['class'];
+            $class = $instance['namespace'] . '\\' . $instance['class'];
             return app()->make($class);
         }
         return null;

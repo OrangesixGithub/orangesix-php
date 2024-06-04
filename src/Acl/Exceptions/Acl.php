@@ -2,9 +2,6 @@
 
 namespace Orangesix\Acl\Exceptions;
 
-use Orangesix\Service\Response\Enum\Message;
-use Orangesix\Service\Response\ServiceResponse;
-
 class Acl extends \Exception
 {
     /**
@@ -17,11 +14,7 @@ class Acl extends \Exception
             session()->flash('messageType', 'warning');
             return redirect(url()->previous());
         } else {
-            $response = new ServiceResponse();
-            return $response->responseData([
-                'redirect' => url()->previous()
-            ])->responseSessionMessage($this->message, Message::Warning)
-                ->response();
+            abort(400, $this->message);
         }
     }
 }
