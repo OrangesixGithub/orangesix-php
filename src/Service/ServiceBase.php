@@ -5,11 +5,12 @@ namespace Orangesix\Service;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Orangesix\Repository\Repository;
 use Orangesix\Repository\RepositoryAutoInstance;
 use Orangesix\Service\Response\ServiceResponse;
 
-abstract class ServiceBase implements Service
+abstract class ServiceBase implements Service, ServiceDBEvent
 {
     use ServiceDataBase;
     use ServiceAutoInstance;
@@ -68,6 +69,22 @@ abstract class ServiceBase implements Service
         return $this->instanceAutoRepository($name, $this->autoInstance['repository'] ?? null);
     }
 
+    /*
+    |--------------------------------------------------------
+    | interface - Service
+    |--------------------------------------------------------
+    | Implementação dos métodos da interface
+    |
+    */
+
+    /**
+     * @return Model
+     */
+    public function getModel(): Model
+    {
+        return $this->repository->getModel();
+    }
+
     /**
      * Realiza a pesquisa do modelo
      * @param int $id
@@ -87,8 +104,14 @@ abstract class ServiceBase implements Service
     {
         $data = $this->validated($request);
         try {
-            return $this->repository->save($data);
+            DB::beginTransaction();
+            $this->beforeManager($request, $data);
+            $id = $this->repository->save($data);
+            $this->afterManager($request, $data);
+            DB::commit();
+            return $id;
         } catch (\Exception $exception) {
+            DB::rollBack();
             if ($exception->getCode() == '23000') {
                 abort(400, "Este registro está sendo utilizado em outro módulo do sistema.
                     <p class='mt-2'><a class='j_message_detail d-flex w-100 fs-7 text-white fw-semibold' href='#'><i class='bi bi-eye me-1'></i>Veja detalhe:</a></p>
@@ -107,8 +130,13 @@ abstract class ServiceBase implements Service
     public function delete(Request $request): void
     {
         try {
+            DB::beginTransaction();
+            $this->beforeDelete($request);
             $this->repository->remove($request->id);
+            $this->afterDelete($request);
+            DB::commit();
         } catch (\Exception $exception) {
+            DB::rollBack();
             if ($exception->getCode() == '23000') {
                 abort(400, "Este registro está sendo utilizado em outro módulo do sistema.
                     <p class='mt-2'><a class='j_message_detail d-flex w-100 fs-7 text-white fw-semibold' href='#'><i class='bi bi-eye me-1'></i>Veja detalhe:</a></p>
@@ -129,11 +157,47 @@ abstract class ServiceBase implements Service
         return [];
     }
 
+    /*
+    |--------------------------------------------------------
+    | interface - ServiceDBEvent
+    |--------------------------------------------------------
+    | Implementação dos métodos da interface
+    |
+    */
+
     /**
-     * @return Model
+     * Executa método antes do manager ser executado - OVERRIDE
+     * @param ...$paramns
+     * @return void
      */
-    public function getModel(): Model
+    public function beforeManager(...$paramns): void
     {
-        return $this->repository->getModel();
+    }
+
+    /**
+     * Executa método depois do manager ser executado - OVERRIDE
+     * @param ...$paramns
+     * @return void
+     */
+    public function afterManager(...$paramns): void
+    {
+    }
+
+    /**
+     * Executa método antes do delete ser executado - OVERRIDE
+     * @param ...$paramns
+     * @return void
+     */
+    public function beforeDelete(...$paramns): void
+    {
+    }
+
+    /**
+     * Executa método depois do delete ser executado - OVERRIDE
+     * @param ...$paramns
+     * @return void
+     */
+    public function afterDelete(...$paramns): void
+    {
     }
 }
