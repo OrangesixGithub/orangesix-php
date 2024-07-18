@@ -5,6 +5,7 @@ namespace Orangesix\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Orangesix\Models\ModelAutoInstance;
+use Orangesix\Repository\Utils\RepositoryFilter;
 use Orangesix\Service\ServiceAutoInstance;
 
 trait RepositoryDataBase
@@ -12,8 +13,9 @@ trait RepositoryDataBase
     use RepositoryTransferList;
     use ModelAutoInstance;
     use ServiceAutoInstance;
+    use RepositoryFilter;
 
-    /** @var array  */
+    /** @var array */
     private ?array $autoInstance;
 
     /**
