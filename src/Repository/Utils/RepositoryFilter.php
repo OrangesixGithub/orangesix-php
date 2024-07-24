@@ -61,6 +61,10 @@ trait RepositoryFilter
                 }
             }
 
+            if (is_int($value) && $field != 'id') {
+                $query->where($field, '=', $value);
+            }
+
             if (is_array($value) && $field != 'query' && $field !== 'order') {
                 $query->whereIn($field, $value);
             }
