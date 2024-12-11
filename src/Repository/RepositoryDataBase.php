@@ -2,20 +2,37 @@
 
 namespace Orangesix\Repository;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Orangesix\Models\ModelAutoInstance;
-use Orangesix\Repository\Utils\RepositoryFilter;
 use Orangesix\Service\ServiceAutoInstance;
+use Orangesix\Repository\Utils\RepositoryFilter;
 
 trait RepositoryDataBase
 {
-    use RepositoryTransferList;
+    use RepositoryFilter;
     use ModelAutoInstance;
     use ServiceAutoInstance;
-    use RepositoryFilter;
+    use RepositoryTransferList;
 
-    /** @var array */
+    /**
+     * @var Model|null
+     */
+    private ?Model $model;
+
+    /**
+     * @var array
+     */
+    private array $filters = [];
+
+    /**
+     * @var array
+     */
+    private array $fields = [];
+
+    /**
+     * @var array|null
+     */
     private ?array $autoInstance;
 
     /**
@@ -37,6 +54,15 @@ trait RepositoryDataBase
     public function getModel(): Model
     {
         return $this->model;
+    }
+
+    /**
+     * @param Model|null $model
+     * @return void
+     */
+    public function setModel(?Model $model): void
+    {
+        $this->model = $model;
     }
 
     /**
@@ -72,5 +98,24 @@ trait RepositoryDataBase
     public function find(int $id): mixed
     {
         return $this->model::findOrFail($id);
+    }
+
+    /**
+     * @param string $name
+     * @param callable $callback
+     * @return void
+     */
+    public function registerFilter(string $name, callable $callback): void
+    {
+        $this->filters[$name] = $callback;
+    }
+
+    /**
+     * @param mixed $field
+     * @return void
+     */
+    public function setField(array $field): void
+    {
+        $this->fields = $field;
     }
 }

@@ -118,7 +118,8 @@ if (!function_exists('FilterData')) {
         string $type = 'date' | 'text' | 'id',
         string $return = 'SQL' | 'DATA',
         string $field = null
-    ): string|array|null {
+    ): string|array|null
+    {
         $data = ['<=', '>=', '<', '>', '{}', '!=', '!%', '%', '='];
         $operation = '';
         foreach ($data as $op) {
@@ -172,8 +173,11 @@ if (!function_exists('FilterData')) {
                     return "{$field} BETWEEN '" . $formateDate($values[0]) . "' AND '" . $formateDate($values[1]) . "'";
                 }
 
-                $date = array_map('intval', explode('-', $values[0]));
                 $operation = $operation == '{}' ? '=' : $operation;
+                $date = array_map('intval', explode('-', $values[0]));
+                $date = array_map(function ($item) {
+                    return empty($item) ? 0 : str_pad($item, 2, "0", STR_PAD_LEFT);
+                }, $date);
 
                 //Individual
                 if (empty($date[2]) && empty($date[1])) {
@@ -228,7 +232,7 @@ if (!function_exists('FilterData')) {
                 if (isset($values[1]) && $operation == '{}') {
                     throw new Exception("Não é possível utilizar intervalo de dados em tipo 'TEXT'.", 400);
                 }
-                return "{$field} {$op} '" . ($qy . $values[0] . $qy)  . "'";
+                return "{$field} {$op} '" . ($qy . $values[0] . $qy) . "'";
             }
         }
 

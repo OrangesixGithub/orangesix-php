@@ -26,6 +26,16 @@ abstract class ServiceBase implements Service, ServiceDBEvent
     private ?array $autoInstance;
 
     /**
+     * @var array
+     */
+    private array $validation = [];
+
+    /**
+     * @var array
+     */
+    private array $validationData = [];
+
+    /**
      * @param Repository $repository
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -83,6 +93,19 @@ abstract class ServiceBase implements Service, ServiceDBEvent
     public function getModel(): Model
     {
         return $this->repository->getModel();
+    }
+
+    /**
+     * @param array $validation
+     * @param array $data
+     * @return $this
+     */
+    public function setValidated(array $validation, array $data = []): self
+    {
+        $this->validation = $validation;
+        $this->validationData = $data;
+
+        return $this;
     }
 
     /**
@@ -154,7 +177,9 @@ abstract class ServiceBase implements Service, ServiceDBEvent
      */
     public function validated(Request $request): array
     {
-        return [];
+        $data = $request->validate($this->validation);
+
+        return array_merge($data, $this->validationData);
     }
 
     /*

@@ -16,7 +16,9 @@ trait ServiceAutoInstance
         if (!empty($instance)) {
             $class = $instance['namespace'] . '\\' . $instance['class'];
             return app()->make($class);
+        } else {
+            $classDefault = 'Orangesix\\Service\\DefaultService';
+            return app()->make($classDefault);
         }
-        return null;
     }
 }

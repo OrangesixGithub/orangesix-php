@@ -12,6 +12,12 @@ interface Repository
     public function getModel(): Model;
 
     /**
+     * @param Model $model
+     * @return void
+     */
+    public function setModel(Model $model): void;
+
+    /**
      * @param array $data
      * @return int
      */
@@ -28,4 +34,17 @@ interface Repository
      * @return mixed
      */
     public function find(int $id): mixed;
+
+    /**
+     * @param string $name
+     * @param callable $callback
+     * @return void
+     */
+    public function registerFilter(string $name, callable $callback): void;
+
+    /**
+     * @param array $field
+     * @return void
+     */
+    public function setField(array $field): void;
 }
