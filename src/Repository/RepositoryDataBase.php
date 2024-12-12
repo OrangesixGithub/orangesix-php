@@ -14,12 +14,7 @@ trait RepositoryDataBase
     use ModelAutoInstance;
     use ServiceAutoInstance;
     use RepositoryTransferList;
-
-    /**
-     * @var Model|null
-     */
-    private ?Model $model;
-
+    
     /**
      * @var array
      */
