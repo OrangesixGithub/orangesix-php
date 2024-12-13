@@ -5,10 +5,12 @@ namespace Orangesix\Service;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Orangesix\Repository\DefaultRepository;
+use Orangesix\Repository\Repository;
 
 /**
  * Service - DEFAULT
  *
+ * @property DefaultRepository | Repository $repository
  * @method findAll(?Request $request = null, string $exec = 'paginate' | 'get')
  */
 class DefaultService extends ServiceBase
@@ -42,13 +44,24 @@ class DefaultService extends ServiceBase
     }
 
     /**
+     * @param array $queryRaw
+     * @return self
+     */
+    public function setQuery(array $queryRaw): DefaultService
+    {
+        $this->repository->setQuery($queryRaw);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param callable $callback
      * @return DefaultService
      */
-    public function registerFilter(string $name, callable $callback): DefaultService
+    public function setFilter(string $name, callable $callback): DefaultService
     {
-        $this->repository->registerFilter($name, $callback);
+        $this->repository->setFilter($name, $callback);
 
         return $this;
     }

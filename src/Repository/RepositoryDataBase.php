@@ -14,16 +14,6 @@ trait RepositoryDataBase
     use ModelAutoInstance;
     use ServiceAutoInstance;
     use RepositoryTransferList;
-    
-    /**
-     * @var array
-     */
-    private array $filters = [];
-
-    /**
-     * @var array
-     */
-    private array $fields = [];
 
     /**
      * @var array|null
@@ -49,15 +39,6 @@ trait RepositoryDataBase
     public function getModel(): Model
     {
         return $this->model;
-    }
-
-    /**
-     * @param Model|null $model
-     * @return void
-     */
-    public function setModel(?Model $model): void
-    {
-        $this->model = $model;
     }
 
     /**
@@ -93,24 +74,5 @@ trait RepositoryDataBase
     public function find(int $id): mixed
     {
         return $this->model::findOrFail($id);
-    }
-
-    /**
-     * @param string $name
-     * @param callable $callback
-     * @return void
-     */
-    public function registerFilter(string $name, callable $callback): void
-    {
-        $this->filters[$name] = $callback;
-    }
-
-    /**
-     * @param mixed $field
-     * @return void
-     */
-    public function setField(array $field): void
-    {
-        $this->fields = $field;
     }
 }

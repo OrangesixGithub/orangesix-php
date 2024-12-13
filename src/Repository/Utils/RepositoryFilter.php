@@ -29,7 +29,21 @@ trait RepositoryFilter
             $filtered['elements']
         );
 
-        return $filtered;
+        $verifyKey = function (array $array, callable $callback): array {
+            $newArray = [];
+            foreach ($array as $key => $value) {
+                $newKey = $callback($key);
+                $newArray[$newKey] = $value;
+            }
+            return $newArray;
+        };
+
+        return $verifyKey($filtered, function ($key) {
+            if (strpos($key, '.') !== false || $key == 'order' || $key == 'search') {
+                return $key;
+            }
+            return $this->getModel()->getTable() . '.' . $key;
+        });
     }
 
     /**
