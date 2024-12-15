@@ -78,7 +78,7 @@ class DefaultRepository implements Repository
         $filter = $this->filter($request);
 
         $query = $this->model::query()
-            ->select(array_merge(['*'], $this->fields));
+            ->select(array_merge(["{$table}.*"], $this->fields));
 
         if (!empty($this->query)) {
             foreach ($this->query as $key => $value) {

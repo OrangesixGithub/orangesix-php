@@ -96,19 +96,6 @@ abstract class ServiceBase implements Service, ServiceDBEvent
     }
 
     /**
-     * @param array $validation
-     * @param array $data
-     * @return $this
-     */
-    public function setValidated(array $validation, array $data = []): self
-    {
-        $this->validation = $validation;
-        $this->validationData = $data;
-
-        return $this;
-    }
-
-    /**
      * Realiza a pesquisa do modelo
      * @param int $id
      * @return mixed
@@ -121,11 +108,16 @@ abstract class ServiceBase implements Service, ServiceDBEvent
     /**
      * Realiza o cadastro ou atualização dos dados
      * @param Request $request
-     * @return void
+     * @return mixed
      */
     public function manager(Request $request): mixed
     {
-        $data = $this->validated($request);
+        if (method_exists($request, 'data')) {
+            $data = $request->data();
+        } else {
+            $data = $this->validated($request);
+        }
+
         try {
             DB::beginTransaction();
             $this->beforeManager($request, $data);
@@ -180,6 +172,19 @@ abstract class ServiceBase implements Service, ServiceDBEvent
         $data = $request->validate($this->validation);
 
         return array_merge($data, $this->validationData);
+    }
+
+    /**
+     * @param array $validation
+     * @param array $data
+     * @return $this
+     */
+    public function setValidated(array $validation, array $data = []): self
+    {
+        $this->validation = $validation;
+        $this->validationData = $data;
+
+        return $this;
     }
 
     /*

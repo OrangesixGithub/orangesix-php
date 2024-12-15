@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 interface Service
 {
     /**
+     * @return Model
+     */
+    public function getModel(): Model;
+
+    /**
      * @param int $id
      * @return mixed
      */
@@ -21,7 +26,7 @@ interface Service
 
     /**
      * @param Request $request
-     * @return mixed
+     * @return void
      */
     public function delete(Request $request): void;
 
@@ -32,7 +37,9 @@ interface Service
     public function validated(Request $request): array;
 
     /**
-     * @return Model
+     * @param array $validation
+     * @param array $data
+     * @return self
      */
-    public function getModel(): Model;
+    public function setValidated(array $validation, array $data = []): self;
 }

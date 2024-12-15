@@ -2,3 +2,4 @@
 vendor
 composer.lock
 example
+/src/sync.ffs_db
