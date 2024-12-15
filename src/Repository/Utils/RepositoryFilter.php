@@ -5,6 +5,7 @@ namespace Orangesix\Repository\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Orangesix\Repository\DefaultRepository;
 
 trait RepositoryFilter
 {
@@ -42,7 +43,11 @@ trait RepositoryFilter
             if (strpos($key, '.') !== false || $key == 'order' || $key == 'search') {
                 return $key;
             }
-            return $this->getModel()->getTable() . '.' . $key;
+            if ($this instanceof DefaultRepository) {
+                return $this->getModel()->getTable() . '.' . $key;
+            } else {
+                return $key;
+            }
         });
     }
 
