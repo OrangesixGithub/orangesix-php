@@ -112,8 +112,8 @@ abstract class ServiceBase implements Service, ServiceDBEvent
      */
     public function manager(Request $request): mixed
     {
-        if (method_exists($request, 'data')) {
-            $data = $request->data();
+        if (method_exists($request, 'getData')) {
+            $data = $request->getData();
         } else {
             $data = $this->validated($request);
         }
