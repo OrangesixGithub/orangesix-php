@@ -16,6 +16,8 @@ class DefaultResource extends JsonResource
         $data = [];
         if (method_exists($this->resource, 'getAttributes')) {
             $data = $this->resource->getAttributes();
+        } elseif (is_int($this->resource?->id)) {
+            $data = (array) $this->resource;
         }
         return array_merge($data);
     }

@@ -100,9 +100,9 @@ abstract class ServiceBase implements Service, ServiceDBEvent
      * @param int $id
      * @return mixed
      */
-    public function find(int $id): mixed
+    public function find(int $id, ...$paramns): mixed
     {
-        return $this->repository->find($id);
+        return $this->repository->find($id, ...$paramns);
     }
 
     /**
