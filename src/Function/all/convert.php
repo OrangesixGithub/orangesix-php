@@ -145,11 +145,15 @@ if (!function_exists('FilterData')) {
                 return "{$date[2]}-{$date[1]}-{$date[0]}";
             };
 
-            $formateDate = function (string $value): string {
+            $formateDate = function (string $value, bool $lastDayMonth = false): string {
                 $date = array_map('intval', explode('-', $value));
                 $date[0] = empty($date[0]) ? date('Y') : $date[0];
                 $date[1] = empty($date[1]) ? date('m') : $date[1];
-                $date[2] = empty($date[2]) ? '01' : $date[2];
+
+                $day = new DateTime("{$date[0]}-{$date[1]}-01");
+                $day->modify('last day of this month');
+                $date[2] = empty($date[2]) ? (!$lastDayMonth ? '01' : $day->format('d')) : $date[2];
+
                 return "{$date[0]}-{$date[1]}-{$date[2]}";
             };
 
@@ -170,7 +174,7 @@ if (!function_exists('FilterData')) {
                     : ($operation == '%' ? '=' : $operation);
 
                 if (isset($values[1]) && $operation == '{}') {
-                    return "{$field} BETWEEN '" . $formateDate($values[0]) . "' AND '" . $formateDate($values[1]) . "'";
+                    return "{$field} BETWEEN '" . $formateDate($values[0]) . "' AND '" . $formateDate($values[1], true) . "'";
                 }
 
                 $operation = $operation == '{}' ? '=' : $operation;

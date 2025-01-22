@@ -81,7 +81,7 @@ if (!function_exists('GetFeriado')) {
         try {
             $data = new DateTime($data);
             $dataOriginal = $data->getTimestamp();
-            $ano = (int) $data->format('Y');
+            $ano = (int)$data->format('Y');
             $pascoa = easter_date($ano);
 
             //Define as datas dos feriados variáveis
@@ -138,6 +138,45 @@ if (!function_exists('DiasUteis')) {
             return $dias;
         } catch (Exception $exception) {
             return 0;
+        }
+    }
+}
+
+if (!function_exists('GetDiffDate')) {
+    /**
+     * Retorna a diferença em formato de texto entre duas datas
+     * @param string $date
+     * @param string $diff
+     * @return string
+     * @throws DateMalformedStringException
+     */
+    function GetDiffDate(string $date, string $diff = 'now'): string
+    {
+        $date = new DateTime($date);
+        $diff = new DateTime($diff);
+        $interval = $date->diff($diff);
+
+        $getLegend = function (DateInterval $interval, bool $invert): string {
+            $legend = !$invert ? 'há' : 'falta';
+            if ($interval->y > 0) {
+                return "{$legend} {$interval->y} ano(s)";
+            } elseif ($interval->m > 0) {
+                return "{$legend} {$interval->m} mês";
+            } elseif ($interval->d > 0) {
+                return "{$legend} {$interval->d} dia(s)";
+            } elseif ($interval->h > 0) {
+                return "{$legend} {$interval->h} hora(s)";
+            } elseif ($interval->i > 0) {
+                return "{$legend} {$interval->i} minuto(s)";
+            } else {
+                return "{$legend} {$interval->s} segundo(s)";
+            }
+        };
+
+        if ($interval->invert == 0) {
+            return $getLegend($interval, false);
+        } else {
+            return $getLegend($interval, true);
         }
     }
 }
