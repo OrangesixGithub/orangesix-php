@@ -39,7 +39,7 @@ abstract class ServiceBase implements Service, ServiceDBEvent
      * @param Repository $repository
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function __construct(?Repository $repository, ?array $autoInstance = null)
+    public function __construct(?Repository $repository = null, ?array $autoInstance = null)
     {
         $this->repository = $repository;
         $this->response = app()->make(ServiceResponse::class);
