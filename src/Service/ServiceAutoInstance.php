@@ -12,7 +12,17 @@ trait ServiceAutoInstance
     private function instanceAutoService(string $class, ?string $path = null): mixed
     {
         $service = str_replace('service', '', $class) . 'Service';
-        $instance = getClass(empty($path) ? app_path('Service') : $path, $service);
+        $paths = [
+            app_path('Service'),
+            app_path('Services'),
+        ];
+        foreach ($paths as $servicePath) {
+            $instance = getClass(empty($path) ? $servicePath : $path, $service);
+            if (!empty($instance)) {
+                break;
+            }
+        }
+
         if (!empty($instance)) {
             $class = $instance['namespace'] . '\\' . $instance['class'];
             return app()->make($class);

@@ -9,18 +9,21 @@ if (!function_exists('getClass')) {
      */
     function getClass(string $directory, string $instance): ?array
     {
-        $interator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
-        $files = new \RegexIterator($interator, '/\.php$/');
-        foreach ($files as $file) {
-            require_once $file->getPathname();
-            $classe = pathinfo($file->getPathname(), PATHINFO_FILENAME);
-            $namespace = getNamespace($file->getPathname());
-            if ($classe == $instance) {
-                return [
-                    'namespace' => $namespace,
-                    'class' => $classe
-                ];
+        if (is_dir($directory)) {
+            $interator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
+            $files = new \RegexIterator($interator, '/\.php$/');
+            foreach ($files as $file) {
+                require_once $file->getPathname();
+                $classe = pathinfo($file->getPathname(), PATHINFO_FILENAME);
+                $namespace = getNamespace($file->getPathname());
+                if ($classe == $instance) {
+                    return [
+                        'namespace' => $namespace,
+                        'class' => $classe
+                    ];
+                }
             }
+            return null;
         }
         return null;
     }

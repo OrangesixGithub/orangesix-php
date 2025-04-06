@@ -13,7 +13,7 @@ class Message extends \Exception
     public function render(): JsonResponse
     {
         $type = match ($this->code) {
-            404 => MessageEnum::Warning,
+            404, 400 => MessageEnum::Warning,
             default => MessageEnum::Error,
         };
         return response()->json([
